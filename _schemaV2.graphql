@@ -6951,18 +6951,16 @@ type LocationEdge {
 
 scalar Long
 
-# A lot in an auction containing merged Sale artwork and Lot state data.
+# A lot in an auction containing merged SaleArtwork and LotState data, stitched from causality.
 type Lot implements Node {
   # A globally unique ID.
   id: ID!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  lot: AuctionsLotState
 
-  # The current auction state of the lot.
-  lot: AuctionsLotState!
-
-  # The saleArtwork object.
+  # The watched saleArtwork object.
   saleArtwork: SaleArtwork
 
   # A slug ID.
@@ -8140,8 +8138,15 @@ type Partner implements Node {
     imageCountLessThan: Int
     last: Int
 
+    # Return artworks that are missing priority metadata
+    missingPriorityMetadata: Boolean
+
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
+
+    # Only allowed for authorized admin/partner requests. When false fetch :all
+    # properties on an artwork, when true or not present fetch artwork :short properties
+    shallow: Boolean
     sort: ArtworkSorts
   ): ArtworkConnection
   cached: Int
@@ -8749,6 +8754,9 @@ type Query {
 
   # Do not use (only used internally for stitching)
   _do_not_use_image: Image
+
+  # Returns a lot with specific `id`.
+  _unused_auctionsLot(id: ID!): AuctionsLotState
 
   # Lot standings for a user
   _unused_auctionsLotStandingConnection(
