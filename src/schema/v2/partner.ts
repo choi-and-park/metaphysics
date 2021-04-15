@@ -48,10 +48,6 @@ const artworksArgs: GraphQLFieldConfigArgumentMap = {
   forSale: {
     type: GraphQLBoolean,
   },
-  imageCountLessThan: {
-    type: GraphQLInt,
-    description: "Return artworks with less than x additional_images.",
-  },
   missingPriorityMetadata: {
     type: GraphQLBoolean,
     description: "Return artworks that are missing priority metadata",
@@ -162,11 +158,16 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
 
           return partnerArtistsForPartnerLoader(id, gravityArgs).then(
             ({ body, headers }) => {
-              return connectionFromArraySlice(body, args, {
-                arrayLength: parseInt(headers["x-total-count"] || "0", 10),
-                sliceStart: offset,
-                resolveNode: (node) => node.artist,
-              })
+              const totalCount = parseInt(headers["x-total-count"] || "0", 10)
+
+              return {
+                totalCount,
+                ...connectionFromArraySlice(body, args, {
+                  arrayLength: totalCount,
+                  sliceStart: offset,
+                  resolveNode: (node) => node.artist,
+                }),
+              }
             }
           )
         },
@@ -188,7 +189,6 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
             artwork_id?: string[]
             exclude_ids?: string[]
             for_sale: boolean
-            image_count_less_than?: number
             missing_priority_metadata?: boolean
             page: number
             published: boolean
@@ -200,7 +200,6 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
 
           const gravityArgs: GravityArgs = {
             for_sale: args.forSale,
-            image_count_less_than: args.imageCountLessThan,
             missing_priority_metadata: args.missingPriorityMetadata,
             page,
             published: true,
@@ -419,6 +418,14 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
         type: GraphQLBoolean,
         resolve: ({ distinguish_represented_artists }) =>
           distinguish_represented_artists,
+      },
+      displayArtistsSection: {
+        type: GraphQLBoolean,
+        resolve: ({ display_artists_section }) => display_artists_section,
+      },
+      profileArtistsLayout: {
+        type: GraphQLString,
+        resolve: ({ profile_artists_layout }) => profile_artists_layout,
       },
       profile: {
         type: Profile.type,
