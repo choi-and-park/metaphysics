@@ -3065,6 +3065,7 @@ type CommerceOffer {
   from: CommerceOrderPartyUnion!
   fromDetails: OrderParty
   fromParticipant: CommerceOrderParticipantEnum
+  hasDefiniteTotal: Boolean!
   id: ID!
   internalID: ID!
   note: String
@@ -5617,6 +5618,9 @@ type Errors {
 }
 
 enum EventStatus {
+  # Load all shows
+  ALL
+
   # End date is in the past
   CLOSED
 
@@ -8275,6 +8279,13 @@ type PageInfo {
 }
 
 type Partner implements Node {
+  # A connection of all artists from a Partner.
+  allArtistsConnection(
+    displayOnPartnerProfile: Boolean
+    hasNotRepresentedArtistWithPublishedArtworks: Boolean
+    hasPublishedArtworks: Boolean
+    representedBy: Boolean
+  ): ArtistPartnerConnection
   analytics: AnalyticsPartnerStats
 
   # A connection of articles related to a partner.
