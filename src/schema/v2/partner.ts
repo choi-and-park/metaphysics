@@ -116,6 +116,7 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
         type: articleConnection.connectionType,
         args: pageable({
           sort: ArticleSorts,
+          page: { type: GraphQLInt },
         }),
         resolve: async (
           { _id },
@@ -577,6 +578,10 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
         type: GraphQLBoolean,
         resolve: ({ display_artists_section }) => display_artists_section,
       },
+      profileBannerDisplay: {
+        type: GraphQLString,
+        resolve: ({ profile_banner_display }) => profile_banner_display,
+      },
       profileArtistsLayout: {
         type: GraphQLString,
         resolve: ({ profile_artists_layout }) => profile_artists_layout,
@@ -602,6 +607,9 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
           },
           sort: {
             type: ShowSorts,
+          },
+          page: {
+            type: GraphQLInt,
           },
           status: {
             type: EventStatus.type,
@@ -645,6 +653,10 @@ export const PartnerType = new GraphQLObjectType<any, ResolverContext>({
 
               return {
                 totalCount,
+                pageCursors: createPageCursors(
+                  { ...args, page, size },
+                  totalCount
+                ),
                 ...connectionFromArraySlice(body, args, {
                   arrayLength: totalCount,
                   sliceStart: offset,
