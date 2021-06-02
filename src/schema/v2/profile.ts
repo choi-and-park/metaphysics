@@ -35,7 +35,7 @@ export const ProfileType = new GraphQLObjectType<any, ResolverContext>({
     },
     href: {
       type: GraphQLString,
-      resolve: ({ id }) => `/${id}`,
+      resolve: ({ id }) => `/partner/${id}`,
     },
     displayArtistsSection: {
       type: GraphQLBoolean,
