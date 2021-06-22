@@ -36,7 +36,7 @@ export const MyBids: GraphQLFieldConfig<void, ResolverContext> = {
     _root,
     _args,
     {
-      causalityLoader,
+      causalityGraphQLLoader,
       meLoader,
       saleArtworksLoader,
       saleArtworksAllLoader,
@@ -46,7 +46,7 @@ export const MyBids: GraphQLFieldConfig<void, ResolverContext> = {
   ) => {
     if (
       !(
-        causalityLoader &&
+        causalityGraphQLLoader &&
         meLoader &&
         saleArtworksLoader &&
         saleArtworksAllLoader &&
@@ -68,7 +68,7 @@ export const MyBids: GraphQLFieldConfig<void, ResolverContext> = {
     const me = await meLoader()
 
     // Fetch all auction lot standings from a given user
-    const causalityPromise: any = causalityLoader({
+    const causalityPromise: any = causalityGraphQLLoader({
       query: gql`
         query LotStandingsConnection($userId: ID!, $first: Int) {
           lotStandingConnection(userId: $userId, first: $first) {

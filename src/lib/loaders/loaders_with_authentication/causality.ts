@@ -12,8 +12,8 @@ interface GraphQLArgs {
   variables: any
 }
 
-export const causalityLoaders = (_accessToken, userID) => {
-  const causalityLoader = async ({
+export const causalityGraphQLLoaders = (_accessToken, userID) => {
+  const causalityGraphQLLoader = async ({
     query,
     variables,
   }: GraphQLArgs): Promise<Record<string, unknown>> => {
@@ -53,6 +53,6 @@ export const causalityLoaders = (_accessToken, userID) => {
   }
 
   return {
-    causalityLoader,
+    causalityGraphQLLoader,
   }
 }
