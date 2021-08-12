@@ -4,7 +4,7 @@
   "description": "",
   "repository": "https://github.com/artsy/metaphysics",
   "engines": {
-    "node": "12",
+    "node": ">=12",
     "npm": "5.6.0",
     "yarn": "1.*"
   },
@@ -38,6 +38,7 @@
   "author": "Art.sy Inc",
   "license": "MIT",
   "dependencies": {
+    "@algolia/client-search": "^4.10.3",
     "@artsy/xapp": "1.0.6",
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.5",
@@ -80,7 +81,6 @@
     "graphql-relay": "0.5.4",
     "graphql-tools": "4.0.5",
     "graphql-type-json": "0.1.4",
-    "heapdump": "0.3.15",
     "hot-shots": "5.6.1",
     "http-shutdown": "1.2.1",
     "i": "0.3.6",
@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@artsy/express-reloadable": "1.4.8",
-    "@artsy/update-repo": "0.2.1",
+    "@artsy/update-repo": "0.4.0",
     "@graphql-inspector/core": "1.27.0",
     "@types/express-rate-limit": "2.9.3",
     "@types/graphql-relay": "0.4.9",
